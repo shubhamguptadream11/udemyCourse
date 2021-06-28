@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- <link rel="stylesheet" href="index.js"> -->
+</head>
+
+<body>
+    <header class="header">
+        <div class="menu">
+            <button onclick="reset()">Again !</button>
+            <div>&lt;Between 1 and 20&gt;</div>
+        </div>
+        <h1 class="guess" >Guess My Number !</h1>
+        <div class="show" >?</div>
+    </header>
+    <main>
+        <div class="score-container">
+            <input type="number" id="input">
+            <button class="btn-check">Check !</button>
+        </div>
+        <div class="display-container">
+            <div class="status"></div>
+            <div class="score-card">Score ! <span class="score" >20</span></div>
+            <div class="high-score">HighScore ! <span class="highscore" ></span></div>
+        </div>
+    </main>
+</body>
+<script>
+
+
+const pickRandom = () => Math.floor(Math.random()*20+1);
+
+const displayMessage = (msg)=>{
+    document.querySelector('.status').textContent = msg;
+}
+
+var start = pickRandom();
+let score=20;
+let highscore;
+let first = true;
+
+
+document.querySelector('.btn-check').addEventListener('click',()=>{
+    let num = document.querySelector('input').value;
+
+    //Empty case
+    if(!num.length){
+         displayMessage('Do Some Guess 👇');
+        return ;
+    }
+    //Loss game
+    if(score < 1){
+        displayMessage('You Lost The Game 😬');
+        return ;
+    }
+    //Other cases
+    else{ 
+
+    num = Number(num);
+    if(num<1 || num>20 ){
+        displayMessage('Guess Number in given Range');
+        return ;
+    } 
+    else{
+        let str;
+        
+        if(num === start){
+            str = '🔥 Correct Number';
+            document.querySelector('.show').textContent= start;
+            document.body.style.backgroundColor = 'green';
+            document.querySelector('.show').style.width = '200px';
+            if(score >= highscore || first){
+                highscore=score;
+                document.querySelector('.highscore').textContent = score;
+                first = false;
+            }
+        }else if(num <start){
+            str = '📉 Low';
+            score--;
+        }else{
+            str = '📈 High';
+            score--;
+        }
+        displayMessage(str);
+        document.querySelector('.score').textContent = score;
+
+    }
+}
+})
+
+const reset = ()=>{
+    start = pickRandom();
+    score=20;
+    displayMessage('');
+    document.querySelector('.score').textContent = score;
+    document.querySelector('input').value = '';
+    document.querySelector('.show').textContent= '?';
+    document.querySelector('.show').style.width = '150px';
+    document.body.style.backgroundColor = 'black';
+}
+</script>
+
+</html>
